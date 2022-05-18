@@ -192,7 +192,9 @@ export default function Home({ route, navigation }) {
                       justifyContent: 'space-between',
                       alignItems: 'center',
                     }}>
-                      <View>
+                      <View style={{
+                        width: 220
+                      }}>
                         <Text style={styles.city}>{cityName}</Text>
                         <Text style={styles.time}>{localDateTime}</Text>
                       </View>
@@ -340,7 +342,7 @@ export default function Home({ route, navigation }) {
                       hourWeather.map((item, index) => {
                         return (
                           <View key={index} style={styles.itemHour}>
-                            <Text style={styles.itemTextHour}>
+                            <Text style={styles.itemTextTemp}>
                               {`${Math.round(item?.temp)}\u2103`}
                             </Text>
                             <Text style={styles.itemTextHour}>
@@ -409,9 +411,13 @@ const styles = StyleSheet.create({
     borderRightWidth: 1,
     borderColor: '#fff'
   },
-  itemTextHour: {
+  itemTextTemp: {
     color: '#fff',
     fontSize: 30,
+  },
+  itemTextHour: {
+    color: '#fff',
+    fontSize: 25,
   },
   container: {
     flex: 1,
