@@ -39,7 +39,7 @@ export default function Home({ route, navigation }) {
   const [isWishlist, setIsWishlist] = useState(false);
 
   const getWeatherByName = async () => {
-    console.log("cit & lat & long:", city, latitude, longitude)
+    console.log("city & lat & long:", city, latitude, longitude)
     setIsLoading(true);
     if (latitude && longitude) {
       setLatitude(latitude);
