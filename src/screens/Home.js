@@ -19,8 +19,10 @@ import { useEffect, useRef, useState } from 'react';
 import getTimeByLocal from '../helpers/convertTime';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { STORAGE_FAVOURITE_KEY } from '../../api/const';
+import convertText from '../helpers/capitalizeText';
 
 const blue = require('../../assets/Sky_Blue.png');
+const cloudy = require('../../assets/cloudy.jpeg');
 
 export default function Home({ route, navigation }) {
   const { width: windowWidth, height: windowHeight } = useWindowDimensions();
@@ -126,6 +128,7 @@ export default function Home({ route, navigation }) {
 
       const openWeatherResult = await weatherService.getDataOpenWeather(location?.coords?.latitude, location?.coords?.longitude);
       if (openWeatherResult) {
+        console.log("RELOAD:", openWeatherResult?.name, location?.coords?.latitude, location?.coords?.longitude);
         setCityName(openWeatherResult?.name);
         const weatherOneCallData = await weatherService.getOpenWeatherOneCallData(location?.coords?.latitude, location?.coords?.longitude);
 
@@ -175,7 +178,7 @@ export default function Home({ route, navigation }) {
               style={{ width: windowWidth, height: windowHeight }}
             >
               <ImageBackground
-                source={blue}
+                source={cloudy}
                 style={{
                   flex: 1,
                 }}>
@@ -264,7 +267,7 @@ export default function Home({ route, navigation }) {
                           style={{ width: 45, height: 45 }}
                         />
                         <Text style={styles.weatherType}>
-                          {currentWeather.weather[0].description}
+                          {convertText.toCapitalize(currentWeather.weather[0].description)}
                         </Text>
                       </View>
                     </View>
@@ -344,9 +347,19 @@ export default function Home({ route, navigation }) {
                           <View key={index} style={styles.itemHour}>
                             <Text style={styles.itemTextTemp}>
                               {`${Math.round(item?.temp)}\u2103`}
+                              <Image
+                                alt="icon"
+                                source={{
+                                  uri: `https://openweathermap.org/img/wn/${item.weather[0].icon}@4x.png`,
+                                }}
+                                style={{ width: 50, height: 50 }}
+                              />
                             </Text>
                             <Text style={styles.itemTextHour}>
                               {getTimeByLocal.getDate(item?.dt * 1000)}
+                            </Text>
+                            <Text style={styles.itemTextDescription}>
+                              {convertText.toCapitalize(item.weather[0].description)}
                             </Text>
                           </View>
                         );
@@ -418,6 +431,10 @@ const styles = StyleSheet.create({
   itemTextHour: {
     color: '#fff',
     fontSize: 25,
+  },
+  itemTextDescription: {
+    color: '#fff',
+    fontSize: 20,
   },
   container: {
     flex: 1,
